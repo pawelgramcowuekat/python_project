@@ -2,14 +2,11 @@
 from random import random
 import random
 from fastapi import FastAPI, File, Header, Response
-import io
-from fastapi.responses import StreamingResponse
 from PIL import Image
 import PIL.ImageOps
 from pydantic import BaseModel
 import requests
 from io import BytesIO
-from http.client import HTTPSConnection
 from base64 import b64encode
 from datetime import datetime
 

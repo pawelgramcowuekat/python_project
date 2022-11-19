@@ -6,7 +6,6 @@ from PIL import Image
 import io
 import PIL.ImageOps
 from pydantic import BaseModel
-from io import BytesIO
 from base64 import b64encode
 from datetime import datetime
 from fastapi.responses import StreamingResponse

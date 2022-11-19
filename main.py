@@ -3,12 +3,13 @@ from random import random
 import random
 from fastapi import FastAPI, File, Header, Response
 from PIL import Image
+import io
 import PIL.ImageOps
 from pydantic import BaseModel
-import requests
 from io import BytesIO
 from base64 import b64encode
 from datetime import datetime
+from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
@@ -20,13 +21,13 @@ def home():
     return "home"
 
 @app.post("/picture/invert")
-async def getImage(text: Item):
-    response = requests.get(text.text)
-    img = Image.open(BytesIO(response.content))
-    inverted_image = PIL.ImageOps.invert(img)
-    inverted_image.save('new_name.png')
-    inverted_image.show()
-    return "otwieram zdjecie"
+async def getImage(file: bytes = File()):
+    getimage = Image.open(io.BytesIO(file))
+    inverted_image = PIL.ImageOps.invert(getimage)
+    printImage = io.BytesIO()
+    inverted_image.save(printImage, "JPEG")
+    printImage.seek(0)
+    return StreamingResponse(printImage, media_type="image/jpeg")
 
 
 @app.get("/prime/{number}")
